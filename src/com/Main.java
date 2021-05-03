@@ -11,9 +11,7 @@ public class Main {
             String method = args[0].toUpperCase();
             String filename = args[1];
 
-            KnowledgeBase kb = KnowledgeBase.readFile(filename);
-
-            System.out.println(kb);
+            KnowledgeBase kb = new KnowledgeBase(filename);
         }
     }
 
