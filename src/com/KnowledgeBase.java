@@ -28,6 +28,7 @@ public class KnowledgeBase {
         parseHornClauses(lineReader.readLine());
         lineReader.readLine(); // Third line is "ASK" and can be ignored
         query = lineReader.readLine().trim();
+        lineReader.close();
         return query;
     }
 
@@ -38,7 +39,8 @@ public class KnowledgeBase {
     private void parseHornClauses(String line) {
         String[] sentences = line.split(";");
         for (String sentence : sentences) {
-            sentence = sentence.replace(" ", ""); // TODO: Look into Java whitespace regex
+        	//regex from Kevin Bowersox's answer on https://stackoverflow.com/questions/15633228/how-to-remove-all-white-spaces-in-java 
+            sentence = sentence.replaceAll("\\s", ""); 
             System.out.println(sentence); // For testing only, delete line when done
 
             if (sentence.contains("=>")){
@@ -48,5 +50,23 @@ public class KnowledgeBase {
                 facts.add(sentence);
             }
         }
+    }
+    
+    /**
+     * @return an ArrayList of the clauses stored in the KnowledgeBase.
+     */
+    public ArrayList<String> getClauses() {
+      return clauses;
+    }
+    
+    /**
+     * @return an ArrayList of facts stored in the KnowledgeBase.
+     */
+    public ArrayList<String> getFacts() {
+      return facts;
+    }
+    
+    public String getQuery() {
+    	return query;
     }
 }
