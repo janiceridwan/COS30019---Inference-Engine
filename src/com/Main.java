@@ -1,7 +1,5 @@
 package com;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.io.IOException;
 
 
@@ -16,42 +14,27 @@ public class Main {
             String filename = args[1];
 
             KnowledgeBase kb = new KnowledgeBase(filename);
-
-
-//            Method thisMethod = null;
-//
-//            Method[] methods = {
-//                    new ForwardChaining(kb)
-//            };
-//
-//            //determine which method the user wants to use
-//            for (int i = 0; i < methods.length; i++) {
-//                //do they want this one?
-//                if (methods[i].code.compareTo(method) == 0) {
-//                    //yes, use this method.
-//                    thisMethod = methods[i];
-//                }
-//            }
+            StringBuilder result = null;
 
             //For the above, could use a switch case like below
             switch (method) {
                 case "FC":
                     ForwardChaining FC = new ForwardChaining(kb);
-                    String result = FC.testAsk();
+                    result = FC.testAsk();
+                    break;
                 case "BC":
-
+                    break;
                 case "TT":
-
+                    break;
                 default:
+                    throw new IllegalArgumentException("Search method does not exist");
             }
 
-            //Has the method been implemented?
-//            if (thisMethod == null) {
-//                //No, give an error
-//                System.out.println("Search method identified by " + method + " not implemented.");
-//                System.exit(1);
-//            }
 
+            //Has the method been implemented?
+            if (result != null && result.length() != 0) {
+                System.out.println(result);
+            }
         }
     }
 

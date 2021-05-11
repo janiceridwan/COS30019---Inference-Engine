@@ -3,10 +3,10 @@ package com;
 import java.util.ArrayList;
 
 public class Symbol {
-    private String name;
+    private final String name;
     private int count = 0;
     private Boolean inferred = false;
-    private ArrayList<Symbol> inPremise = new ArrayList<>();
+    private final ArrayList<Symbol> inPremise = new ArrayList<>();
 
     public Symbol(String name) {
         this.name = name;
@@ -16,6 +16,10 @@ public class Symbol {
         for (int i = 0; i < premises; i++) {
                 count++;
         }
+    }
+
+    public void decrementCount() {
+        count--;
     }
 
     public Boolean isInferred(ArrayList facts) {
@@ -47,8 +51,6 @@ public class Symbol {
 
     @Override
     public String toString() {
-        return "Symbol{" +
-                "name=" + name +
-                '}';
+        return name;
     }
 }

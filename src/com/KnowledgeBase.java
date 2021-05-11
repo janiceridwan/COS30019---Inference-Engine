@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 // File format is as follows:
 // TELL
 // p2=> p3; p3 => p1; c => e; b&e => f; f&g => h; p1=>d; p1&p3 => c; a; b; p2;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 public class KnowledgeBase {
     private final ArrayList<String> facts;
     private final ArrayList<String> clauses;
-    private ArrayList<Symbol> symbols = new ArrayList<>();
+    private final ArrayList<Symbol> symbols = new ArrayList<>();
     private String query;
 
     public KnowledgeBase(String filename) throws IOException {
@@ -58,13 +57,6 @@ public class KnowledgeBase {
                 }
             }
 
-            for (String symbol : symbolList) {
-                if (sentence.contains("=>") && premiseContains(sentence, symbol)) {
-                    Symbol x = getSymbol(sentence.split("=>")[1]);
-                    getSymbol(symbol).addPremise(x);
-                }
-            }
-
             if (sentence.contains("=>")){
                 clauses.add(sentence);
             }
@@ -73,19 +65,25 @@ public class KnowledgeBase {
                 getSymbol(sentence).infer();
             }
         }
-        for (Symbol symbol : symbols) {
-            System.out.println(symbol.getName());
-            System.out.println(symbol.getCount());
-            System.out.println(symbol.isInferred(facts));
-            System.out.println(symbol.getInPremise());
+        for (String sentence : sentences) {
+            sentence = sentence.replaceAll("\\s", "");
+            if (sentence.contains("=>")){
+                for (Symbol s : symbols) {
+                    if (premiseContains(sentence, s.getName()) && !s.getInPremise().contains(getSymbol(sentence.split("=>")[1]))) {
+                        s.addPremise(getSymbol(sentence.split("=>")[1]));
+                    }
+                }
+            }
         }
     }
 
     private boolean premiseContains(String sentence, String c) {
+        boolean contains;
         String premise = sentence.split("=>")[0];
         String[] conjunctions = premise.split("&");
         for (String conjunction : conjunctions) {
-            return conjunction.equals(c);
+            contains = conjunction.equals(c);
+            if (contains) {return true;}
         }
         return false;
     }
@@ -103,16 +101,6 @@ public class KnowledgeBase {
         String premise = sentence.split("=>")[0];
         String[] conjunction = premise.split("&");
         return conjunction.length;
-    }
-
-    public ArrayList<Symbol> premiseSymbols(String sentence) {
-        String premise = sentence.split("=>")[0];
-        String[] conjunctions = premise.split("&");
-        ArrayList<Symbol> temp = new ArrayList<>();
-        for (String conjunction : conjunctions) {
-            temp.add(getSymbol(conjunction));
-        }
-        return temp;
     }
 
     public static boolean conclusionContains(String sentence, String c){
