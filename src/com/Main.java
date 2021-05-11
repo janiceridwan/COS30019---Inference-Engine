@@ -23,6 +23,8 @@ public class Main {
                     result = FC.testAsk();
                     break;
                 case "BC":
+                	BackwardChaining BC = new BackwardChaining(kb);
+                	result = BC.testAsk();
                     break;
                 case "TT":
                     break;
