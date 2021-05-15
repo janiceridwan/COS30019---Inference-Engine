@@ -59,25 +59,27 @@ public class BackwardChaining extends Method {
     		if (!facts.contains(aFact)){
     			// create array to hold new symbols to be processed 
     			ArrayList<Symbol> p = new ArrayList<Symbol>();
-    			for(int i=0;i<clauses.size();i++){
-    			// for each clause that contains the symbol as its conclusion
-    				if (conclusionContains(clauses.get(i), aFact)){   							
-    							for(Symbol c : aFact.getInPremise()){
-    								// add the symbols to a temp array
-    								p.add(c);
-    							}
-    						}	
-    			}
+    			
+    			// for each clause that contains the symbol as its conclusion  					
+				for (Symbol c: aFact.getInConclusion()){
+					
+					//add symbols to be processed
+					for (Symbol d: aFact.getInPremise()) {
+						p.add(d);
+					}
+				}								
+					
+															    			
     			// as it is not a fact and no symbols were generated, we cannot prove that ASK is implied by TELL 
     			if (p.size()==0){
     				return false;
     			}
     			else{
     					// there are symbols so check for previously processed ones and add to agenda
-    					for(int i=0;i<p.size();i++){
-    							if (!outputFacts.contains(p.get(i)))
-    									agenda.add(p.get(i));
-    							}        
+					for(int i=0;i<p.size();i++){
+							if (!outputFacts.contains(p.get(i)))
+									agenda.add(p.get(i));
+							}        
     			}
     		}
      

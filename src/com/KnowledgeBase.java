@@ -75,6 +75,17 @@ public class KnowledgeBase {
                 }
             }
         }
+        
+        for (String sentence : sentences) {
+            sentence = sentence.replaceAll("\\s", "");
+            if (sentence.contains("=>")){
+                for (Symbol s : symbols) {
+                    if (conclusionContains(sentence, s.getName()) && !s.getInPremise().contains(getSymbol(sentence.split("=>")[1]))) {
+                        s.addConclusion(getSymbol(sentence.split("=>")[1]));
+                    }
+                }
+            }
+        }
     }
 
     private boolean premiseContains(String sentence, String c) {

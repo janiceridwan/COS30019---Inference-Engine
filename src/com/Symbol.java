@@ -7,6 +7,7 @@ public class Symbol {
     private int count = 0;
     private Boolean inferred = false;
     private final ArrayList<Symbol> inPremise = new ArrayList<>();
+    private final ArrayList<Symbol> inConclusion = new ArrayList<>();
 
     public Symbol(String name) {
         this.name = name;
@@ -49,6 +50,14 @@ public class Symbol {
         inPremise.add(symbol);
     }
 
+    public ArrayList<Symbol> getInConclusion() {
+        return inConclusion;
+    }
+
+    public void addConclusion(Symbol symbol) {
+        inConclusion.add(symbol);
+    }
+    
     @Override
     public String toString() {
         return name;
