@@ -49,8 +49,9 @@ public class BackwardChaining extends Method {
         Symbol aFact = agenda.remove(0);
 
         if (aFact.isInferred(facts)){
-//            if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
-            outputFacts.add(aFact);
+            if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
+//            outputFacts.add(aFact);
+            if (!facts.contains(aFact.getName())) {facts.add(aFact.getName());}
             return true;
         }
 
@@ -58,10 +59,13 @@ public class BackwardChaining extends Method {
         for (Symbol s : aFact.getInConclusion()) {
             agenda.add(s);
             if (checkQuery()) {
-//                if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
-                outputFacts.add(aFact);
                 i--;
-                if (i==0) {return true;}
+                if (i==0) {
+                    if (!facts.contains(aFact.getName())) {facts.add(aFact.getName());}
+//                    outputFacts.add(aFact);
+                    if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
+                    return true;
+                }
             }
         }
 
