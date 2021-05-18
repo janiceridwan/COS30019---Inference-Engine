@@ -62,12 +62,12 @@ public class ForwardChaining extends Method {
 
             //search through each fact until there are none left
             //get the first fact we want to explore and add to list of facts used to output
-                for (Symbol c : aFact.getInPremise()) {
-                    c.decrementCount();
-                    if (c.getCount() == 0) {
-                        agenda.add(c);
-                    }
+            for (Symbol c : aFact.getInPremise()) {
+                c.decrementCount();
+                if (c.getCount() == 0) {
+                    agenda.add(c);
                 }
+            }
             //forward chaining material:
             //https://snipplr.com/view/56296/ai-forward-chaining-implementation-for-propositional-logic-horn-form-knowledge-bases
         }

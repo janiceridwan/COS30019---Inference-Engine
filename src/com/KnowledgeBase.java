@@ -80,12 +80,22 @@ public class KnowledgeBase {
             sentence = sentence.replaceAll("\\s", "");
             if (sentence.contains("=>")){
                 for (Symbol s : symbols) {
-                    if (conclusionContains(sentence, s.getName()) && !s.getInPremise().contains(getSymbol(sentence.split("=>")[1]))) {
-                        s.addConclusion(getSymbol(sentence.split("=>")[1]));
+                    if (conclusionContains(sentence, s.getName())) {
+                        String[] premiseStrings = sentence.split("=>")[0].split("&");
+                        ArrayList<Symbol> premiseSymbols = new ArrayList();
+                        for (String p : premiseStrings){
+                            premiseSymbols.add(getSymbol(p));
+                        }
+                        s.addConclusion(premiseSymbols);
                     }
                 }
             }
         }
+
+//        for (Symbol s : symbols) {
+//            System.out.println(s.getName());
+//            System.out.println(s.getInConclusion() + "\n");
+//        }
     }
 
     private boolean premiseContains(String sentence, String c) {

@@ -54,8 +54,10 @@ public class Symbol {
         return inConclusion;
     }
 
-    public void addConclusion(Symbol symbol) {
-        inConclusion.add(symbol);
+    public void addConclusion(ArrayList<Symbol> symbols) {
+        for (Symbol s : symbols) {
+            inConclusion.add(s);
+        }
     }
     
     @Override
