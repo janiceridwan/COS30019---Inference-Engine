@@ -11,19 +11,16 @@ import java.util.Queue;
 
 public class BackwardChaining extends Method {
 
-    private final KnowledgeBase kb;
     private final ArrayList<String> facts;
-    private final String query;
     public static ArrayList<String> clauses;
-    private ArrayList<Symbol> agenda = new ArrayList<>();
+    private final ArrayList<Symbol> agenda = new ArrayList<>();
     private final Queue<Symbol> outputFacts;
 
     public BackwardChaining(KnowledgeBase kb) {
         super(kb);
-        this.kb = kb;
         this.facts = kb.getFacts();
-        this.query = kb.getQuery();
-        this.clauses = kb.getClauses();
+        String query = kb.getQuery();
+        clauses = kb.getClauses();
         this.outputFacts = new LinkedList<>();
         agenda.add(kb.getSymbol(query));
     }
@@ -44,35 +41,31 @@ public class BackwardChaining extends Method {
         return output;
     }
 
+    // Depth-first search until a fact is reached then backtrack
     @Override
     public boolean checkQuery() {
-        Symbol aFact = agenda.remove(0);
+        // remove the first symbol on the agenda
+        Symbol aSymbol = agenda.remove(0);
 
-        if (aFact.isInferred(facts)){
-            if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
-//            outputFacts.add(aFact);
-            if (!facts.contains(aFact.getName())) {facts.add(aFact.getName());}
+        // check if aSymbol is a fact
+        if (aSymbol.isInferred(facts)){
+            if (!outputFacts.contains(aSymbol)) {outputFacts.add(aSymbol);}
+            if (!facts.contains(aSymbol.getName())) {facts.add(aSymbol.getName());}
             return true;
         }
 
-        int i = aFact.getInConclusion().size();
-        for (Symbol s : aFact.getInConclusion()) {
+        int i = aSymbol.getInConclusion().size();
+        for (Symbol s : aSymbol.getInConclusion()) {
             agenda.add(s);
             if (checkQuery()) {
                 i--;
                 if (i==0) {
-                    if (!facts.contains(aFact.getName())) {facts.add(aFact.getName());}
-//                    outputFacts.add(aFact);
-                    if (!outputFacts.contains(aFact)) {outputFacts.add(aFact);}
+                    if (!facts.contains(aSymbol.getName())) {facts.add(aSymbol.getName());}
+                    if (!outputFacts.contains(aSymbol)) {outputFacts.add(aSymbol);}
                     return true;
                 }
             }
         }
-
         return false;
     }
-
-
-
- 
 }

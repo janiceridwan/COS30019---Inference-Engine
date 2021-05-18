@@ -82,7 +82,7 @@ public class KnowledgeBase {
                 for (Symbol s : symbols) {
                     if (conclusionContains(sentence, s.getName())) {
                         String[] premiseStrings = sentence.split("=>")[0].split("&");
-                        ArrayList<Symbol> premiseSymbols = new ArrayList();
+                        ArrayList<Symbol> premiseSymbols = new ArrayList<>();
                         for (String p : premiseStrings){
                             premiseSymbols.add(getSymbol(p));
                         }
@@ -91,11 +91,6 @@ public class KnowledgeBase {
                 }
             }
         }
-
-//        for (Symbol s : symbols) {
-//            System.out.println(s.getName());
-//            System.out.println(s.getInConclusion() + "\n");
-//        }
     }
 
     private boolean premiseContains(String sentence, String c) {

@@ -10,7 +10,8 @@ public class Main {
         if (args.length != 2) {
             usage();
         } else {
-            String method = args[0].toUpperCase();
+//            String method = args[0].toUpperCase();
+            String method = "FC";
             String filename = args[1];
 
             KnowledgeBase kb = new KnowledgeBase(filename);

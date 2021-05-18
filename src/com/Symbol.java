@@ -23,7 +23,7 @@ public class Symbol {
         count--;
     }
 
-    public Boolean isInferred(ArrayList facts) {
+    public Boolean isInferred(ArrayList<String> facts) {
         if (count == 0 && facts.contains(this.name)) {
             inferred = true;
         }
@@ -55,9 +55,7 @@ public class Symbol {
     }
 
     public void addConclusion(ArrayList<Symbol> symbols) {
-        for (Symbol s : symbols) {
-            inConclusion.add(s);
-        }
+        inConclusion.addAll(symbols);
     }
     
     @Override
