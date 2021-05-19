@@ -10,8 +10,8 @@ public class Main {
         if (args.length != 2) {
             usage();
         } else {
-//            String method = args[0].toUpperCase();
-            String method = "FC";
+            String method = args[0].toUpperCase();
+//            String method = "FC";
             String filename = args[1];
 
             KnowledgeBase kb = new KnowledgeBase(filename);
@@ -28,6 +28,8 @@ public class Main {
                 	result = BC.testAsk();
                     break;
                 case "TT":
+                	TruthTable TT = new TruthTable(kb);
+                	result = TT.testAsk();
                     break;
                 default:
                     throw new IllegalArgumentException("Search method does not exist");
