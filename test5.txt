@@ -1,0 +1,7 @@
+TELL
+a&b => c; c&d = > p1; p1&f => p2; h => p3; p3 =>b; b => d; j => f; a; h; j;
+ASK
+p2
+
+
+

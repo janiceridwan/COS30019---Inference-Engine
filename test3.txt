@@ -1,0 +1,6 @@
+TELL
+a => p1; p1 =>b; b => p3; e=>g;l=>m; a;
+ASK
+p3
+
+
