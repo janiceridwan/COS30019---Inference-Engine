@@ -1,10 +1,5 @@
 package com;
 
-// While agenda not empty
-//      get next symbol off agenda
-//      if curSymbol is not inferred
-//          add previous symbols to agenda
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,6 +10,9 @@ public class BackwardChaining extends Method {
     public static ArrayList<String> clauses;
     private final ArrayList<Symbol> agenda = new ArrayList<>();
     private final Queue<Symbol> outputFacts;
+    private final ArrayList<Symbol> checkedSymbols = new ArrayList<>();
+    private final ArrayList<Symbol> symbols;
+    private final Symbol querySymbol;
 
     public BackwardChaining(KnowledgeBase kb) {
         super(kb);
@@ -23,6 +21,8 @@ public class BackwardChaining extends Method {
         clauses = kb.getClauses();
         this.outputFacts = new LinkedList<>();
         agenda.add(kb.getSymbol(query));
+        this.symbols = kb.getSymbols();
+        this.querySymbol = kb.getSymbol(query);
     }
 
     @Override
@@ -44,8 +44,14 @@ public class BackwardChaining extends Method {
     // Depth-first search until a fact is reached then backtrack
     @Override
     public boolean checkQuery() {
+        // Checks if the query symbol is in the knowledge base's propositional symbols
+        if (!symbols.contains(querySymbol)) {
+            throw new IllegalArgumentException("Query must be a propositional symbol");
+        }
+
         // remove the first symbol on the agenda
         Symbol aSymbol = agenda.remove(0);
+        checkedSymbols.add(aSymbol);
 
         // check if aSymbol is a fact
         if (aSymbol.isInferred(facts)){
@@ -56,14 +62,24 @@ public class BackwardChaining extends Method {
 
         int i = aSymbol.getInConclusion().size();
         for (Symbol s : aSymbol.getInConclusion()) {
-            agenda.add(s);
-            if (checkQuery()) {
+            boolean x = !checkedSymbols.contains(s);
+            if (!checkedSymbols.isEmpty() && x) {
+                agenda.add(s);
+            }
+            if (!agenda.isEmpty() && checkQuery()) {
                 i--;
                 if (i==0) {
                     if (!facts.contains(aSymbol.getName())) {facts.add(aSymbol.getName());}
                     if (!outputFacts.contains(aSymbol)) {outputFacts.add(aSymbol);}
                     return true;
                 }
+            }
+        }
+        for (Symbol s : aSymbol.getInConclusion()) {
+            if (agenda.isEmpty() && facts.contains(s.getName())) {
+                if (!facts.contains(aSymbol.getName())) {facts.add(aSymbol.getName());}
+                if (!outputFacts.contains(aSymbol)) {outputFacts.add(aSymbol);}
+                return true;
             }
         }
         return false;

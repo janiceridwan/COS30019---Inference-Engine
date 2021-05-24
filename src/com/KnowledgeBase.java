@@ -52,22 +52,23 @@ public class KnowledgeBase {
                     tempSymbols.add(symbol);
                     symbols.add(new Symbol(symbol));
                 }
-                if (sentence.contains("=>") && conclusionContains(sentence, symbol)) {
+                if (sentence.contains("=>") && conclusionContains(sentence, symbol) && checkClause(sentence)) {
                     getSymbol(symbol).addCount(premiseCount(sentence));
                 }
             }
 
             if (sentence.contains("=>")){
-                clauses.add(sentence);
+                    clauses.add(sentence);
             }
             else {
                 facts.add(sentence);
                 getSymbol(sentence).infer();
             }
         }
+
         for (String sentence : sentences) {
             sentence = sentence.replaceAll("\\s", "");
-            if (sentence.contains("=>")){
+            if (sentence.contains("=>") && checkClause(sentence)){
                 for (Symbol s : symbols) {
                     if (premiseContains(sentence, s.getName()) && !s.getInPremise().contains(getSymbol(sentence.split("=>")[1]))) {
                         s.addPremise(getSymbol(sentence.split("=>")[1]));
@@ -78,7 +79,7 @@ public class KnowledgeBase {
         
         for (String sentence : sentences) {
             sentence = sentence.replaceAll("\\s", "");
-            if (sentence.contains("=>")){
+            if (sentence.contains("=>") && checkClause(sentence)){
                 for (Symbol s : symbols) {
                     if (conclusionContains(sentence, s.getName())) {
                         String[] premiseStrings = sentence.split("=>")[0].split("&");
@@ -91,6 +92,17 @@ public class KnowledgeBase {
                 }
             }
         }
+    }
+
+    // Checks for clauses where symbols infer themselves
+    private boolean checkClause(String sentence) {
+        String premise = sentence.split("=>")[0];
+        String[] premiseSymbols = premise.split("&");
+        String conclusion = sentence.split("=>")[1];
+        for (String x : premiseSymbols) {
+            if (x.equals(conclusion)) { return false; }
+        }
+        return true;
     }
 
     private boolean premiseContains(String sentence, String c) {

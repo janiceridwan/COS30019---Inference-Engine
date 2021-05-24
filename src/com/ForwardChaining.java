@@ -7,6 +7,8 @@ public class ForwardChaining extends Method {
     private final KnowledgeBase kb;
     private final ArrayList<String> facts;
     private final String query;
+    private final Symbol querySymbol;
+    private final ArrayList<Symbol> symbols;
     private ArrayList<Symbol> agenda;
     private final ArrayList<Symbol> outputFacts;
 
@@ -16,6 +18,8 @@ public class ForwardChaining extends Method {
         this.facts = kb.getFacts();
         this.query = kb.getQuery();
         this.outputFacts = new ArrayList<>();
+        this.querySymbol = kb.getSymbol(query);
+        this.symbols = kb.getSymbols();
         createAgenda();
     }
 
@@ -46,6 +50,11 @@ public class ForwardChaining extends Method {
 
     @Override
     public boolean checkQuery() {
+        // Checks if the query symbol is in the knowledge base's propositional symbols
+        if (!symbols.contains(querySymbol)) {
+            throw new IllegalArgumentException("Query must be a propositional symbol");
+        }
+
         while (!agenda.isEmpty()) {
             // remove off the first fact we want to explore
             Symbol aFact = agenda.remove(0);
@@ -68,8 +77,6 @@ public class ForwardChaining extends Method {
                     agenda.add(c);
                 }
             }
-            //forward chaining material:
-            //https://snipplr.com/view/56296/ai-forward-chaining-implementation-for-propositional-logic-horn-form-knowledge-bases
         }
 
         return false;

@@ -10,6 +10,7 @@ public class TruthTable extends Method {
 	private final int columns;
 	private final int rows;
 	private final boolean[][] table;
+	private final Symbol querySymbol;
 	private int count;
 	private final ArrayList<String> facts;
 	private final ArrayList<String> clauses;
@@ -21,6 +22,7 @@ public class TruthTable extends Method {
 		this.facts = kb.getFacts();
 		this.clauses = kb.getClauses();
 		this.symbols = kb.getSymbols();
+		this.querySymbol = kb.getSymbol(query);
 
 		//size of TT is 2^n, where n is the no. of propositional symbols
 		rows = (int)Math.pow(2,(symbols.size()));
@@ -72,14 +74,22 @@ public class TruthTable extends Method {
 
 	@Override
 	public boolean checkQuery() {
+		// Checks if the query symbol is in the knowledge base's propositional symbols
+		if (!symbols.contains(querySymbol)) {
+			throw new IllegalArgumentException("Query must be a propositional symbol");
+		}
+
 		boolean validRow;
 		boolean queryValid = false;
 
 		// For testing purposes only
-//		for (int x = 0; x < 11; x++) {
-//			System.out.print(symbols.get(x).getName() + " ");
+//		for (Symbol symbol : symbols) {
+//			System.out.print(symbol.getName() + " ");
 //		}
 //		System.out.println();
+
+		if (facts.isEmpty()) { return false; } // If there are no facts then a query can not be determined
+
 		for (int row = 0; row < table.length; row++) {
 			validRow = true;
 			// Validate the implications
@@ -100,11 +110,10 @@ public class TruthTable extends Method {
 				queryValid = true;
 
 				// For testing purposes only
-//				for (int x = 0; x < 11; x++) {
+//				for (int x = 0; x < symbols.size(); x++) {
 //					System.out.print(table[row][x] + " ");
 //				}
 //				System.out.println();
-
 
 			}
 		}
