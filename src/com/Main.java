@@ -11,11 +11,10 @@ public class Main {
             usage();
         } else {
             String method = args[0].toUpperCase();
-//            String method = "FC";
             String filename = args[1];
 
             KnowledgeBase kb = new KnowledgeBase(filename);
-            StringBuilder result = null;
+            StringBuilder result;
 
             //For the above, could use a switch case like below
             switch (method) {
