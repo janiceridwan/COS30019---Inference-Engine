@@ -107,10 +107,10 @@ public class TruthTable extends Method {
 				queryValid = true;
 
 				// For testing purposes only
-				for (int x = 0; x < symbols.size(); x++) {
-					System.out.print(table[row][x] + " ");
-				}
-				System.out.println();
+//				for (int x = 0; x < symbols.size(); x++) {
+//					System.out.print(table[row][x] + " ");
+//				}
+//				System.out.println();
 
 			}
 		}
