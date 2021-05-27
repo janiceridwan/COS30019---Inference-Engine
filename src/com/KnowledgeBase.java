@@ -71,16 +71,8 @@ public class KnowledgeBase {
             if (sentence.contains("=>") && checkClause(sentence)){
                 for (Symbol s : symbols) {
                     if (premiseContains(sentence, s.getName()) && !s.getInPremise().contains(getSymbol(sentence.split("=>")[1]))) {
-                        s.addPremise(getSymbol(sentence.split("=>")[1]));
+                        s.addPremise(getSymbol(sentence.split("=>")[1]));                   
                     }
-                }
-            }
-        }
-        
-        for (String sentence : sentences) {
-            sentence = sentence.replaceAll("\\s", "");
-            if (sentence.contains("=>") && checkClause(sentence)){
-                for (Symbol s : symbols) {
                     if (conclusionContains(sentence, s.getName())) {
                         String[] premiseStrings = sentence.split("=>")[0].split("&");
                         ArrayList<Symbol> premiseSymbols = new ArrayList<>();
@@ -92,6 +84,7 @@ public class KnowledgeBase {
                 }
             }
         }
+        
     }
 
     // Checks for clauses where symbols infer themselves

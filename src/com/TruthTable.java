@@ -49,10 +49,7 @@ public class TruthTable extends Method {
 
 				table[i][j] = (k == 0);
 
-				// For test printing TT
-//				System.out.print(k == 0 ? "T" : "F");
 			}
-//			System.out.println();
 		}
 
 	}
@@ -105,15 +102,15 @@ public class TruthTable extends Method {
 				}
 			}
 			// Check if row is valid for given KB and KB |= query
-			if (validRow && table[row][findPos(query)]) {
+			if (validRow && validateSymbol(querySymbol, row)) {
 				count++;
 				queryValid = true;
 
 				// For testing purposes only
-//				for (int x = 0; x < symbols.size(); x++) {
-//					System.out.print(table[row][x] + " ");
-//				}
-//				System.out.println();
+				for (int x = 0; x < symbols.size(); x++) {
+					System.out.print(table[row][x] + " ");
+				}
+				System.out.println();
 
 			}
 		}
@@ -133,6 +130,25 @@ public class TruthTable extends Method {
 		return true;
 	}
 
+	 // Validates the symbols in the TT, kb|=query iff the query is true in all rows where the kb is also true
+    private boolean validateSymbol(Symbol s, int row){
+    	boolean result;
+        if (s.toString().contains("~")){
+            if (table[row][findPos(query)] == false){
+                result = true;
+            }else{
+                result = false;
+            }
+        }else{
+            if (table[row][findPos(query)] == true){
+                result = true;
+            }else{
+                result = false;
+            }
+        }
+        return result;
+    }
+    
 	// Find the position of a symbol in the table's row
 	private Integer findPos(String x) {
 		for (int i = 0; i < symbols.size(); i++) {
